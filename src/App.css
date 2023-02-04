@@ -31,3 +31,9 @@ body {
     width: 60%;
   }
 }
+
+@media screen and (min-width: 992px) {
+  .bg-image {
+    width: 50%;
+  }
+}
