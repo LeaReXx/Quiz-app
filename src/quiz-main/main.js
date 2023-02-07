@@ -131,7 +131,7 @@ export default class Main extends Component {
               <h4>سپهر آقاپور</h4>
               <p className="quiz-about-text">توسعه دهنده فرانت</p>
               <div className="socials">
-                <a href="mailto:dev.sepehr@gmail.com">
+                <a href="mailto:dev.sepehr@outlook.com">
                   <FontAwesomeIcon icon="fa-regular fa-envelope" />
                 </a>
                 <a
