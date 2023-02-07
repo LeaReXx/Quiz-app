@@ -160,7 +160,7 @@ export default class Main extends Component {
           {this.state.quizStarted && (
             <div className="question-box">
               <span className="question-counter">
-                {`${this.questionCurrentIndex} / ${this.questionCount}`}
+                {`${this.questionCurrentIndex + 1} / ${this.questionCount}`}
               </span>
               <p className="question-title">
                 {this.questionsArray[this.questionCurrentIndex].question}
