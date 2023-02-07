@@ -7,51 +7,54 @@ export default class Main extends Component {
       {
         question: "نام اولین سازنده خودروی بنزینی در جهان چیست؟",
         answers: [
-          { answerText: "هنری فورد", isTrue: false },
-          { answerText: "جیووانی میتسوبیشی", isTrue: false },
-          { answerText: "کارل بنز", isTrue: true },
-          { answerText: "نیکلا تسلا", isTrue: false },
+          { id: 1, answerText: "هنری فورد", isTrue: false },
+          { id: 2, answerText: "جیووانی میتسوبیشی", isTrue: false },
+          { id: 3, answerText: "کارل بنز", isTrue: true },
+          { id: 4, answerText: "نیکلا تسلا", isTrue: false },
         ],
       },
       {
         question: "کتاب هملت را چه کسی نوشته؟",
         answers: [
-          { answerText: "داوینچی", isTrue: false },
-          { answerText: "شکسپیر", isTrue: true },
-          { answerText: "کافکا", isTrue: false },
-          { answerText: "رامبراند", isTrue: false },
+          { id: 1, answerText: "داوینچی", isTrue: false },
+          { id: 2, answerText: "شکسپیر", isTrue: true },
+          { id: 3, answerText: "کافکا", isTrue: false },
+          { id: 4, answerText: "رامبراند", isTrue: false },
         ],
       },
       {
         question: "گیوتین اختراع کدام کشور است؟",
         answers: [
-          { answerText: "فرانسه", isTrue: true },
-          { answerText: "آلمان", isTrue: false },
-          { answerText: "آمریکا", isTrue: false },
-          { answerText: "روسیه", isTrue: false },
+          { id: 1, answerText: "فرانسه", isTrue: true },
+          { id: 2, answerText: "آلمان", isTrue: false },
+          { id: 3, answerText: "آمریکا", isTrue: false },
+          { id: 4, answerText: "روسیه", isTrue: false },
         ],
       },
       {
         question: "کوچک ترین واحد ساختمانی بدن انسان مدام است؟",
         answers: [
-          { answerText: "ژن", isTrue: false },
-          { answerText: "مولکول", isTrue: false },
-          { answerText: "عصب", isTrue: false },
-          { answerText: "سلول", isTrue: true },
+          { id: 1, answerText: "ژن", isTrue: false },
+          { id: 2, answerText: "مولکول", isTrue: false },
+          { id: 3, answerText: "عصب", isTrue: false },
+          { id: 4, answerText: "سلول", isTrue: true },
         ],
       },
     ];
-
     this.state = {
       welcome: true,
       about: false,
       quizStarted: false,
+      endGame: false,
+      score: 0,
+      scorePerQuestion: 100 / this.questionsArray.length,
+      correctAnswer: 0,
     };
     this.questionCurrentIndex = 0;
     this.questionCount = this.questionsArray.length;
-    console.log(this.questionsArray);
     this.aboutMeBtn = this.aboutMeBtn.bind(this);
     this.backBtn = this.backBtn.bind(this);
+    this.startQuestion = this.startQuestion.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
   }
 
@@ -60,11 +63,42 @@ export default class Main extends Component {
   }
 
   backBtn() {
-    this.setState({ welcome: true, about: false });
+    this.setState({
+      welcome: true,
+      about: false,
+      quizStarted: false,
+      endGame: false,
+      score: 0,
+      correctAnswer: 0,
+    });
+    this.questionCurrentIndex = 0;
+  }
+
+  startQuestion() {
+    this.setState({ welcome: false, quizStarted: true });
   }
 
   nextQuestion() {
-    this.setState({ welcome: false, about: false, quizStarted: true });
+    this.questionCurrentIndex += 1;
+    this.questionsArray.length === this.questionCurrentIndex &&
+      this.setState({
+        welcome: false,
+        about: false,
+        quizStarted: false,
+        endGame: true,
+      });
+  }
+
+  calcScore(userAnswer) {
+    this.setState((state) => {
+      return userAnswer
+        ? { correctAnswer: state.correctAnswer + 1 }
+        : { correctAnswer: state.correctAnswer };
+    });
+    userAnswer &&
+      this.setState((state) => {
+        return { score: state.scorePerQuestion + state.score };
+      });
   }
 
   render() {
@@ -79,7 +113,7 @@ export default class Main extends Component {
               <div className="quiz-welcome-btns">
                 <button
                   className="quiz-btns quiz-welcome-start-btn"
-                  onClick={this.nextQuestion}
+                  onClick={this.startQuestion}
                 >
                   شروع
                 </button>
@@ -92,7 +126,6 @@ export default class Main extends Component {
               </div>
             </div>
           )}
-
           {this.state.about && (
             <div className="quiz-welcome-about">
               <h4>سپهر آقاپور</h4>
@@ -101,12 +134,17 @@ export default class Main extends Component {
                 <a href="mailto:dev.sepehr@gmail.com">
                   <FontAwesomeIcon icon="fa-regular fa-envelope" />
                 </a>
-                <a href="https://github.com/LeaReXx" target="_blank">
+                <a
+                  href="https://github.com/LeaReXx"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <FontAwesomeIcon icon="fa-brands fa-github" />
                 </a>
                 <a
                   href="https://discord.com/users/638113846770401307"
                   target="_blank"
+                  rel="noreferrer"
                 >
                   <FontAwesomeIcon icon="fa-brands fa-discord" />
                 </a>
@@ -122,35 +160,51 @@ export default class Main extends Component {
           {this.state.quizStarted && (
             <div className="question-box">
               <span className="question-counter">
-                {`${this.questionCurrentIndex + 1} / ${this.questionCount}`}
+                {`${this.questionCurrentIndex} / ${this.questionCount}`}
               </span>
               <p className="question-title">
                 {this.questionsArray[this.questionCurrentIndex].question}
               </p>
               <div className="question-answers-box">
-                <button className="question-4asnwers-btn">
-                  {
-                    this.questionsArray[this.questionCurrentIndex].answers[0]
-                      .answerText
+                {this.questionsArray[this.questionCurrentIndex].answers.map(
+                  (answer) => {
+                    return (
+                      <button
+                        className="question-4answers-btn"
+                        key={answer.id}
+                        onClick={() => {
+                          this.nextQuestion();
+                          this.calcScore(answer.isTrue);
+                        }}
+                      >
+                        {answer.answerText}
+                      </button>
+                    );
                   }
-                </button>
-                <button className="question-4asnwers-btn">
-                  {
-                    this.questionsArray[this.questionCurrentIndex].answers[1]
-                      .answerText
-                  }
-                </button>
-                <button className="question-4asnwers-btn">
-                  {
-                    this.questionsArray[this.questionCurrentIndex].answers[2]
-                      .answerText
-                  }
-                </button>
-                <button className="question-4asnwers-btn">
-                  {
-                    this.questionsArray[this.questionCurrentIndex].answers[3]
-                      .answerText
-                  }
+                )}
+              </div>
+            </div>
+          )}
+          {this.state.endGame && (
+            <div className="quiz-end">
+              <h3>کوئیر به پایان رسید (●'◡'●)</h3>
+              <p>
+                امتیاز شما <strong>{`${this.state.score} / 100`} </strong> است
+              </p>
+              <span>
+                پاسخ درست شما به سوالات
+                <strong>
+                  {this.state.correctAnswer} از
+                  {this.questionCount}
+                </strong>
+                است
+              </span>
+              <div>
+                <button
+                  className="quiz-btns quiz-back-btn"
+                  onClick={this.backBtn}
+                >
+                  بازگشت
                 </button>
               </div>
             </div>
