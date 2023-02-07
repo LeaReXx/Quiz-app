@@ -199,6 +199,20 @@ export default class Main extends Component {
                 </strong>
                 است
               </span>
+              <div className="quiz-end-correct-answer-parent">
+                <strong>پاسخ درست سوالات</strong>
+                <ul className="quiz-end-correct-answers">
+                  {this.questionsArray.map((question) => {
+                    return (
+                      <li>
+                        {question.answers.map((item) => {
+                          return item.isTrue && item.answerText;
+                        })}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
               <div>
                 <button
                   className="quiz-btns quiz-back-btn"

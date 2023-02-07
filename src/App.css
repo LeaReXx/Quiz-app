@@ -187,7 +187,6 @@ a {
   font-weight: bold;
 }
 
-
 /* quiz end  */
 .quiz-end {
   text-align: center;
@@ -198,12 +197,37 @@ a {
   margin: 1rem auto;
 }
 
+.quiz-end-correct-answer-parent {
+  margin: 1rem auto;
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--main-color);
+  border-radius: 15px;
+  padding: 5px;
+}
+
+.quiz-end-correct-answers {
+  padding-top: 0.5rem;
+  text-align: right;
+  margin: auto;
+  list-style-type: decimal;
+  display: flex;
+  flex-wrap: wrap;
+  list-style-position: inside;
+}
+.quiz-end-correct-answers li {
+  padding: 0 5px;
+}
 @media screen and (min-width: 576px) {
   .quiz-container {
     width: 450px;
     padding: 30px 20px;
   }
-  
+
   .question-counter {
     left: -10px;
   }
