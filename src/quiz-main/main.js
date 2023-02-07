@@ -202,9 +202,9 @@ export default class Main extends Component {
               <div className="quiz-end-correct-answer-parent">
                 <strong>پاسخ درست سوالات</strong>
                 <ul className="quiz-end-correct-answers">
-                  {this.questionsArray.map((question) => {
+                  {this.questionsArray.map((question,index) => {
                     return (
-                      <li>
+                      <li key={index}>
                         {question.answers.map((item) => {
                           return item.isTrue && item.answerText;
                         })}
