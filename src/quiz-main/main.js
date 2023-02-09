@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import QuestionItemBtns from "./quistion-item-btns/question-item-btns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default class Main extends Component {
   constructor(props) {
@@ -169,16 +170,14 @@ export default class Main extends Component {
                 {this.questionsArray[this.questionCurrentIndex].answers.map(
                   (answer) => {
                     return (
-                      <button
-                        className="question-4answers-btn"
+                      <QuestionItemBtns
                         key={answer.id}
-                        onClick={() => {
+                        {...answer}
+                        onAction={(isCorrect) => {
                           this.nextQuestion();
-                          this.calcScore(answer.isTrue);
+                          this.calcScore(isCorrect);
                         }}
-                      >
-                        {answer.answerText}
-                      </button>
+                      />
                     );
                   }
                 )}
@@ -202,7 +201,7 @@ export default class Main extends Component {
               <div className="quiz-end-correct-answer-parent">
                 <strong>پاسخ درست سوالات</strong>
                 <ul className="quiz-end-correct-answers">
-                  {this.questionsArray.map((question,index) => {
+                  {this.questionsArray.map((question, index) => {
                     return (
                       <li key={index}>
                         {question.answers.map((item) => {
